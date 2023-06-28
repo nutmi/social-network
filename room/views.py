@@ -28,4 +28,4 @@ class NormalRoomViewSet(mixins.CreateModelMixin,
     serializer_class = NormalRoomSerializer
 
     def get_queryset(self):
-        return NormalRoom.objects.filter(Q(user_1=self.request.user) | Q(user_1=self.request.user))
+        return NormalRoom.objects.filter(Q(user_1=self.request.user) | Q(user_2=self.request.user))

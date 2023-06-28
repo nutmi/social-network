@@ -1,19 +1,20 @@
 from django.shortcuts import render
-from .serializers import FriendListSerializer
+from .models import Room, Message
 from rest_framework import mixins, viewsets
-from .models import FriendList
+from .serializers import RoomSerializer
+from django.db.models import Q
 
 
 # Create your views here.
-class FriendListViewSet(
+class RoomViewSet(
     mixins.CreateModelMixin,
+    mixins.DestroyModelMixin,
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
-    mixins.DestroyModelMixin,
     viewsets.GenericViewSet,
 ):
-    serializer_class = FriendListSerializer
     lookup_field = "id"
+    serializer_class = RoomSerializer
 
     def get_queryset(self):
-        return FriendList.objects.filter(user=self.request.user)
+        return Room.objects.filter(creator=self.request.user)

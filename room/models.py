@@ -5,16 +5,25 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-class Room(models.Model):
+class GroupRoom(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="creator")
 
+    def __str__(self) -> str:
+        return self.creator
 
 class Message(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField(max_length=150)
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    room = models.ForeignKey(GroupRoom, on_delete=models.CASCADE)
 
 
 class Guest(models.Model):
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    room = models.ForeignKey(GroupRoom, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+class NormalRoom(models.Model):
+    user_1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_1")
+    user_2 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_2")
+
+    def __str__(self) -> str:
+        return (f"room of {self.user_1} and {self.user_2}")

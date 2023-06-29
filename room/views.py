@@ -1,8 +1,15 @@
 from django.shortcuts import render
-from .models import GroupRoom, MessageNormalRoom, NormalRoom
+from .models import GroupRoom, MessageNormalRoom, NormalRoom, Guest
 from rest_framework import mixins, viewsets
-from .serializers import RoomSerializer, NormalRoomSerializer, MessageNormalRoomSerializer
+from .serializers import GroupRoomSerializer, NormalRoomSerializer, MessageNormalRoomSerializer, GuestSerializer
 from django.db.models import Q
+
+class GuestViewSet(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.DestroyModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+    serializer_class = GuestSerializer
+    lookup_field = "id"
+    queryset = Guest.objects.all()
+
+
 
 class MessageNormalRoomViewSet(mixins.CreateModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = MessageNormalRoomSerializer
@@ -20,7 +27,7 @@ class RoomViewSet(
     viewsets.GenericViewSet,
 ):
     lookup_field = "id"
-    serializer_class = RoomSerializer
+    serializer_class = GroupRoomSerializer
 
     def get_queryset(self):
         return GroupRoom.objects.filter(creator=self.request.user)

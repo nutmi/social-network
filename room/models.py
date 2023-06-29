@@ -7,9 +7,10 @@ User = get_user_model()
 
 class GroupRoom(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="creator")
+    amout_of_users = models.IntegerField(default=0)
 
     def __str__(self) -> str:
-        return str(self.creator)
+        return (f"creator {self.creator}, id {self.id}")
 
 
 class Guest(models.Model):
